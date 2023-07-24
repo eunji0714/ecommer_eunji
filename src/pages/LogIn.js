@@ -1,18 +1,29 @@
 import React, {useState} from 'react';
 import {Button, Container, Form, Stack, Nav} from "react-bootstrap";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const LogIn = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const navigate = useNavigate()
+
     const onLoginhandler = async() => {
         try{
             const userInput = {
-                name : email,
-                password : password
+                email,password
             }
-            console.log(userInput)
+            console.log("로그인 프로세스", userInput)
+
+            const {data, status} = await axios.post("http://localhost:8000/api/auth/login", userInput)
+            console.log(data)
+            console.log(status)
+            if (status === 200){
+
+                navigate("/signup")
+            }
         }catch (err){
 
         }

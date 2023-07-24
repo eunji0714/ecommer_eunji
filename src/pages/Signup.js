@@ -1,26 +1,43 @@
 import React, {useState} from 'react';
-import {Container} from "react-bootstrap";
+import {Container, Form} from "react-bootstrap";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const Signup = () => {
+
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmpw, setConfirmpw] = useState("")
     const [username, setUsername] = useState("")
 
+    const [isMarketingAgree, setIsMarketingAgree] = useState(false)
+    const [isPersonalInfoAgree, setIsPersonalInfoAgree] = useState(false)
+
+    console.log(isMarketingAgree)
     const onSignuphandler = async () =>{
         try{
             if(password !== confirmpw) {
                 alert("Password do not match")
             }
             const userInput = {
-                email : email,
-                password : password,
-                name : username,
+                email, password, username,
+                isMarketingAgree, isPersonalInfoAgree,
+                provider : "local"
+                // email : email,
+                // password : password,
+                // username : username,
+                // key와 value가 같을 때 value는 생략 가능
             }
             console.log("회원가입 프로세스", userInput)
-        }catch(err){
 
+            const {data, status} = await axios.post("http://localhost:8000/api/auth/signup", userInput)
+            if (status === 201){
+                navigate("/")
+            }
+        }catch(err){
+            console.log(err.message)
         }
     }
 
@@ -38,7 +55,7 @@ const Signup = () => {
                 <h5>이메일</h5>
                 <input
                     className={"py-2"}
-                    type="text"
+                    type="email"
                     placeholder="이메일"
                     value={email}
                     onChange={e=> setEmail(e.target.value)}
@@ -77,6 +94,24 @@ const Signup = () => {
                     onChange={e=>setUsername(e.target.value)}
                 />
             </div>
+
+            <Form.Check
+                inline
+                label="개인정보 마케팅 활용 동의"
+                name="group1"
+                type={"checkbox"}
+                value={isMarketingAgree}
+                onChange={e=> setIsMarketingAgree(!isMarketingAgree)}
+            />
+            <Form.Check
+                inline
+                label="개인정보수집 및 이용 동의"
+                name="group1"
+                type={"checkbox"}
+                value={isPersonalInfoAgree}
+                onChange={e=> setIsPersonalInfoAgree(!isPersonalInfoAgree)}
+            />
+
             <div className={"row"}>
                 <button
                     className={"border-0 py-3 mt-5 rounded-1 bg-info text-white"}
