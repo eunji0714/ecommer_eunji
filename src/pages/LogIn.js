@@ -21,8 +21,8 @@ const LogIn = () => {
             console.log(data)
             console.log(status)
             if (status === 200){
-
-                navigate("/signup")
+                localStorage.setItem("token", data.data.token)
+                navigate("/profile")
             }
         }catch (err){
 
@@ -46,14 +46,15 @@ const LogIn = () => {
                 value={password}
                 onChange={e=>setPassword(e.target.value)}
             />
-            <button
-                className={"mt-3 py-2 border-0 bg-info text-white rounded-1"}
+            <Button
+                className={"mt-3 fw-bolder py-3 border-0 bg-info text-white"}
                 onClick={onLoginhandler}
             >
                 로그인
-            </button>
+            </Button>
             <div className={"row text-center mx-auto mt-3 "}>
-                <p className={"col "}>비밀번호 재설정</p>
+                <Nav.Link href="/findid" className={"col"}>아이디 찾기</Nav.Link>
+                <Nav.Link href="/findpw" className={"col"}>비밀번호 재설정</Nav.Link>
                 <Nav.Link href="/signup" className={"col"}>회원가입</Nav.Link>
             </div>
             <div className={"text-center mt-4"}>

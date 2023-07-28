@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Container, Form} from "react-bootstrap";
+import {Button, Container, Form, Spinner} from "react-bootstrap";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
@@ -11,6 +11,11 @@ const Signup = () => {
     const [password, setPassword] = useState("")
     const [confirmpw, setConfirmpw] = useState("")
     const [username, setUsername] = useState("")
+    const [phonenum, setPhonenum] = useState("")
+    const [code, setCode] = useState("")
+    const [codeshow, setCodeshow] = useState(false)
+
+    const [loading, setLoading] = useState(false)
 
     const [isMarketingAgree, setIsMarketingAgree] = useState(false)
     const [isPersonalInfoAgree, setIsPersonalInfoAgree] = useState(false)
@@ -21,10 +26,12 @@ const Signup = () => {
             if(password !== confirmpw) {
                 alert("Password do not match")
             }
+            setLoading(true)
             const userInput = {
                 email, password, username,
                 isMarketingAgree, isPersonalInfoAgree,
-                provider : "local"
+                provider : "local",
+                profileImg : ""
                 // email : email,
                 // password : password,
                 // username : username,
@@ -33,20 +40,65 @@ const Signup = () => {
             console.log("회원가입 프로세스", userInput)
 
             const {data, status} = await axios.post("http://localhost:8000/api/auth/signup", userInput)
+            console.log(data)
             if (status === 201){
                 navigate("/")
+                setLoading(false)
             }
         }catch(err){
+            setLoading(false)
             console.log(err.message)
         }
     }
 
+    const emailSend = async () => {
+        try{
+            setLoading(true)
+            const userInput = {
+                email
+            }
+            const {status} = await axios.post("http://localhost:8000/api/auth/email/send",userInput)
+            console.log()
+            if(status === 201){
+
+                alert("Please check your email.")
+                setCodeshow(true)
+                setLoading(false)
+            }
+        }catch (err){
+            setLoading(false)
+        }
+    }
+
+    const emailVerification = async() => {
+        try{
+            setLoading(true)
+            const userInput = {
+                email, code
+            }
+            const {status} = await axios.post("http://localhost:8000/api/auth/email/check", userInput)
+
+            if(status === 201){
+                alert("이메일 확인완료")
+                setLoading(false)
+            }
+        }catch(err){
+            console.log(err.message)
+            setLoading(false)
+        }
+    }
+
     return (
-
-
-        <Container className={"mt-4 mx-auto px-5 mb-4"}>
+        <Container className={"mt-5 mx-auto px-5 mb-4"}>
             <h3 className={"mb-5"}>🏠은지의집</h3>
             <div>
+                {loading && (
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                    //loading이 참이면 spinner, 거짓이면 null
+                )}
+
                 <h4>회원가입</h4>
                 <p className={"text-center"}>SNS계정으로 간편하게 회원가입</p>
                 <hr></hr>
@@ -62,7 +114,24 @@ const Signup = () => {
                     //변경된 값을 추적해주는 코드
                     //내가 입력한 값, event로 써도됨
                 />
-                <button className={"border-0 py-3 mt-4 rounded-1"}>이메일 인증하기</button>
+                {codeshow ? (
+                    <input
+                        className={"py-2 mt-2"}
+                        type="text"
+                        placeholder="코드 입력하기"
+                        value={code}
+                        onChange={e=> setCode(e.target.value)}
+                        //변경된 값을 추적해주는 코드
+                        //내가 입력한 값, event로 써도됨
+                    />
+                ) : null}
+
+                <button
+                    className={"border-0 py-3 mt-4 rounded-1"}
+                    onClick={ codeshow ? emailVerification : emailSend}
+                >
+                    {codeshow ? "이메일 인증하기" : "이메일 검사하기"}
+                </button>
             </div>
             <div className={"row mt-4"}>
                 <h5>비밀번호</h5>
@@ -94,31 +163,43 @@ const Signup = () => {
                     onChange={e=>setUsername(e.target.value)}
                 />
             </div>
-
-            <Form.Check
-                inline
-                label="개인정보 마케팅 활용 동의"
-                name="group1"
-                type={"checkbox"}
-                value={isMarketingAgree}
-                onChange={e=> setIsMarketingAgree(!isMarketingAgree)}
-            />
-            <Form.Check
-                inline
-                label="개인정보수집 및 이용 동의"
-                name="group1"
-                type={"checkbox"}
-                value={isPersonalInfoAgree}
-                onChange={e=> setIsPersonalInfoAgree(!isPersonalInfoAgree)}
-            />
+            <div className={"row mt-4"}>
+                <h5>휴대폰번호</h5>
+                <p>기호나 띄어쓰기 없이 번호를 입력하세요.</p>
+                <input
+                    className={"py-2"}
+                    type="text"
+                    placeholder="휴대폰 번호"
+                    value={phonenum}
+                    onChange={e=>setPhonenum(e.target.value)}
+                />
+            </div>
+            <div className={"mt-4"}>
+                <Form.Check
+                    inline
+                    label="개인정보 마케팅 활용 동의"
+                    name="group1"
+                    type={"checkbox"}
+                    value={isMarketingAgree}
+                    onChange={e=> setIsMarketingAgree(!isMarketingAgree)}
+                />
+                <Form.Check
+                    inline
+                    label="개인정보수집 및 이용 동의"
+                    name="group1"
+                    type={"checkbox"}
+                    value={isPersonalInfoAgree}
+                    onChange={e=> setIsPersonalInfoAgree(!isPersonalInfoAgree)}
+                />
+            </div>
 
             <div className={"row"}>
-                <button
-                    className={"border-0 py-3 mt-5 rounded-1 bg-info text-white"}
+                <Button
+                    className={"border-0 py-3 mt-5 fw-bolder bg-info text-white"}
                     onClick={onSignuphandler}
                 >
                     회원가입하기
-                </button>
+                </Button>
             </div>
         </Container>
     );
