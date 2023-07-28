@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Container, Form, Spinner} from "react-bootstrap";
+import {Button, Container, Form, InputGroup, Spinner} from "react-bootstrap";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
@@ -14,6 +14,7 @@ const Signup = () => {
     const [phonenum, setPhonenum] = useState("")
     const [code, setCode] = useState("")
     const [codeshow, setCodeshow] = useState(false)
+    const [btnDisabled, setBtnDisabled] = useState(false)
 
     const [loading, setLoading] = useState(false)
 
@@ -88,6 +89,31 @@ const Signup = () => {
         }
     }
 
+    const emailCheck = async() => {
+        try{
+            const userInput = {
+                email
+            }
+            console.log(userInput)
+            const {status, data} = await axios.post("http://localhost:8000/api/user/email", userInput)
+
+            console.log(data)
+            if(status === 201){
+                alert("이미 가입된 이메일 입니다.")
+
+            }
+
+        }catch (err){
+            console.log(err.message)
+            alert("사용 가능한 이메일 입니다.")
+            setBtnDisabled(true)
+        }
+
+    }
+
+
+
+
     return (
         <Container className={"mt-5 mx-auto px-5 mb-4"}>
             <h3 className={"mb-5"}>🏠은지의집</h3>
@@ -105,15 +131,31 @@ const Signup = () => {
             </div>
             <div className={"row"}>
                 <h5>이메일</h5>
-                <input
-                    className={"py-2"}
-                    type="email"
-                    placeholder="이메일"
-                    value={email}
-                    onChange={e=> setEmail(e.target.value)}
-                    //변경된 값을 추적해주는 코드
-                    //내가 입력한 값, event로 써도됨
-                />
+
+                <InputGroup className="py-2">
+                    <Form.Control
+                        placeholder="이메일"
+                        type="email"
+                        value={email}
+                        onChange={e=> setEmail(e.target.value)}
+                    />
+                    <Button
+                        variant="outline-secondary"
+                        onClick={emailCheck}
+                        disabled={btnDisabled}
+                    >
+                        중복확인
+                    </Button>
+                </InputGroup>
+                {/*<input*/}
+                {/*    className={"py-2"}*/}
+                {/*    type="email"*/}
+                {/*    placeholder="이메일"*/}
+                {/*    value={email}*/}
+                {/*    onChange={e=> setEmail(e.target.value)}*/}
+                {/*    //변경된 값을 추적해주는 코드*/}
+                {/*    //내가 입력한 값, event로 써도됨*/}
+                {/*/>*/}
                 {codeshow ? (
                     <input
                         className={"py-2 mt-2"}
