@@ -1,5 +1,5 @@
 import {createBrowserRouter} from "react-router-dom";
-import {Findid, Findpw, LogIn, Main, Movies, Profile, Setpassword, Signup, Tvs} from "./pages"
+import {Details, Findid, Findpw, LogIn, Main, Movies, Profile, Setpassword, Signup, Tvs} from "./pages"
 
 const router = createBrowserRouter([
     {
@@ -37,6 +37,14 @@ const router = createBrowserRouter([
     {
         path: "/tvs",
         element: <Tvs/>
+    },
+    {
+        path: "/movies/:movieid",
+        element: <Details/>
+    },
+    {
+        path: "/tvs/:tvid",
+        element: <Details/>
     },
 ])
 

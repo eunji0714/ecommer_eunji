@@ -40,7 +40,7 @@ const Movies = () => {
                                 <Card.Text>
                                     {movie.overview.slice(0,80)}
                                 </Card.Text>
-                                <Button variant="primary">Go somewhere</Button>
+                                <Button variant="primary" href={`/movies/${movie.id}`}>자세히 보기</Button>
                             </Card.Body>
                         </Card>
                     ))

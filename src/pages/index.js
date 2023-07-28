@@ -7,5 +7,6 @@ import Setpassword from "./Setpassword";
 import Main from "./Main";
 import Movies from "./Movies"
 import Tvs from "./Tvs";
+import Details from "./Details";
 
-export { LogIn, Signup, Profile, Findid, Findpw, Setpassword, Main, Movies, Tvs }
+export { LogIn, Signup, Profile, Findid, Findpw, Setpassword, Main, Movies, Tvs, Details }
