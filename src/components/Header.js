@@ -51,7 +51,7 @@ const Header = () => {
                     <Nav className="me-auto">
                         <Nav.Link href="/movies">Movies</Nav.Link>
                         <Nav.Link href="/tvs">Tvs</Nav.Link>
-
+                        <Nav.Link href="/users">User List</Nav.Link>
                     </Nav>
                     {
                         isLoggedIn

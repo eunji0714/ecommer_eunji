@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import axios from "axios";
 
 const Details = () => {
 
     const params = useParams()
     // console.log(window.location.pathname)
+    const location = useLocation()
     console.log(params)
 
-    const [movie, setMovie] = useState({})
+    const [item, setItem] = useState({})
 
     const getMovieById = async () => {
         try{
@@ -17,10 +18,12 @@ const Details = () => {
                     Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NGE3NTdhMWVlYzIzYjZiMjNhNmMzMzQwYjdmNjgyNCIsInN1YiI6IjY0YjM3NzEwMGU0ZmM4MDBjNjgzYzg4YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Aknbgw7OXsHEm-k7z_Ia6Y_YDKYlCBHIu7eYOGIhWu0'
                 }
             }
-            const {data, status} = await axios.get(`https://api.themoviedb.org/3/movie/${params.movieid}`,options)
+            const movieURL = `https://api.themoviedb.org/3/movie/${params.movieid}`
+            const tvURL = `https://api.themoviedb.org/3/tv/${params.tvid}`
+            const {data, status} = await axios.get(location.pathname.includes("movies") ? movieURL : tvURL,options)
             console.log(data,status)
             if(status === 200){
-                setMovie(data)
+                setItem(data)
             }
         }catch(err){
             console.log(err.message)
@@ -33,8 +36,8 @@ const Details = () => {
 
     return (
         <div>
-            <h1>{movie.title}</h1>
-            장르 : {movie.genres && movie.genres.map(g => (
+            <h1>{item.title ? item.title : item.name}</h1>
+            장르 : {item.genres && item.genres.map(g => (
                 g.name
         ))}
 

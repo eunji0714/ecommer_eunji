@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {InputGroup, Form, Button, Container, Nav} from "react-bootstrap";
+import {InputGroup, Form, Button, Container, Nav, Row, Col} from "react-bootstrap";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
@@ -26,8 +26,10 @@ const Findpw = () => {
 
 
     return (
-        <Container className={"mt-5 col px-5 "}>
-            <h3 className={"mb-5"}>🏠은지의집</h3>
+        <Row>
+            <Col md={{span:6, offset:3}}>
+                <Container className={"mt-5 col px-5 "}>
+            <h3 className={"mb-5 fw-bold"}>🏠은지의집</h3>
             <p className={"text-center"}>가입한 이메일 주소를 입력해주세요.</p>
            <div className={"d-grid"}>
                 <input
@@ -50,9 +52,11 @@ const Findpw = () => {
             </div>
             <div className={"row text-center mx-auto mt-5 "}>
                 <Nav.Link href="/findid" className={"col"}>아이디 찾기</Nav.Link>
-                <Nav.Link href="/" className={"col"}>로그인 하기</Nav.Link>
+                <Nav.Link href="/login" className={"col"}>로그인 하기</Nav.Link>
             </div>
         </Container>
+            </Col>
+        </Row>
     );
 };
 

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Container, Form, InputGroup, Spinner} from "react-bootstrap";
+import {Button, Col, Container, Form, InputGroup, Row, Spinner} from "react-bootstrap";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
@@ -115,8 +115,10 @@ const Signup = () => {
 
 
     return (
-        <Container className={"mt-5 mx-auto px-5 mb-4"}>
-            <h3 className={"mb-5"}>🏠은지의집</h3>
+        <Row>
+            <Col md={{span:6, offset:3}}>
+                <Container className={"mt-5 mx-auto px-5 mb-4"}>
+            <h3 className={"mb-5 fw-bold"}>🏠은지의집</h3>
             <div>
                 {loading && (
                     <Spinner animation="border" role="status">
@@ -244,6 +246,8 @@ const Signup = () => {
                 </Button>
             </div>
         </Container>
+            </Col>
+        </Row>
     );
 };
 

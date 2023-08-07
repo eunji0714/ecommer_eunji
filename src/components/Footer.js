@@ -3,13 +3,13 @@ import {Col, Container, Row} from "react-bootstrap";
 
 const Footer = () => {
     return (
-        <footer>
-            <Container>
-                <Row>
-                    <Col className='text-center py-3'>Copyright &copy; 은지House</Col>
-                </Row>
-            </Container>
-        </footer>
+        <Container className={"mt-5"}>
+            <footer style={{bottom:"0px"}} className={"text-center blockquote-footer"}>
+                <p className="">Copyright &copy; 은지House</p>
+            </footer>
+        </Container>
+
+
     );
 };
 

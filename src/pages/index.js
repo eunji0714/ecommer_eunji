@@ -8,5 +8,6 @@ import Main from "./Main";
 import Movies from "./Movies"
 import Tvs from "./Tvs";
 import Details from "./Details";
+import Users from "./Users";
 
-export { LogIn, Signup, Profile, Findid, Findpw, Setpassword, Main, Movies, Tvs, Details }
+export { LogIn, Signup, Profile, Findid, Findpw, Setpassword, Main, Movies, Tvs, Details, Users }
