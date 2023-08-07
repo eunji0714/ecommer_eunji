@@ -1,11 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Col, Container, Form, InputGroup, Row, Spinner} from "react-bootstrap";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {signup} from "../actions/userActions";
 
 const Signup = () => {
 
     const navigate = useNavigate()
+
+    const dispatch = useDispatch()
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -21,36 +25,56 @@ const Signup = () => {
     const [isMarketingAgree, setIsMarketingAgree] = useState(false)
     const [isPersonalInfoAgree, setIsPersonalInfoAgree] = useState(false)
 
-    console.log(isMarketingAgree)
-    const onSignuphandler = async () =>{
-        try{
-            if(password !== confirmpw) {
-                alert("Password do not match")
-            }
-            setLoading(true)
-            const userInput = {
-                email, password, username,
-                isMarketingAgree, isPersonalInfoAgree,
-                provider : "local",
-                profileImg : ""
-                // email : email,
-                // password : password,
-                // username : username,
-                // key와 value가 같을 때 value는 생략 가능
-            }
-            console.log("회원가입 프로세스", userInput)
+    const userRegister = useSelector((state) => state.userResister)
+    const {error, userInfo} = userRegister
 
-            const {data, status} = await axios.post("http://localhost:8000/api/auth/signup", userInput)
-            console.log(data)
-            if (status === 201){
-                navigate("/")
-                setLoading(false)
-            }
-        }catch(err){
-            setLoading(false)
-            console.log(err.message)
+    console.log(isMarketingAgree)
+    // const onSignuphandler = async () =>{
+    //     try{
+    //         if(password !== confirmpw) {
+    //             alert("Password do not match")
+    //         }
+    //         setLoading(true)
+    //         const userInput = {
+    //             email, password, username,
+    //             isMarketingAgree, isPersonalInfoAgree,
+    //             provider : "local",
+    //             profileImg : ""
+    //             // email : email,
+    //             // password : password,
+    //             // username : username,
+    //             // key와 value가 같을 때 value는 생략 가능
+    //         }
+    //         console.log("회원가입 프로세스", userInput)
+    //
+    //         const {data, status} = await axios.post("http://localhost:8000/api/auth/signup", userInput)
+    //         console.log(data)
+    //         if (status === 201){
+    //             navigate("/")
+    //             setLoading(false)
+    //         }
+    //     }catch(err){
+    //         setLoading(false)
+    //         console.log(err.message)
+    //     }
+    // }
+    const onSignuphandler = async () =>{
+        if(password !== confirmpw) {
+            alert("Password do not match")
+        }else{
+            dispatch(signup(
+                email, password, username,
+                isMarketingAgree,
+                isPersonalInfoAgree,
+            ))
         }
     }
+
+    useEffect(()=> {
+        if(userInfo){
+            navigate("/login")
+        }
+    }, [userInfo, navigate])
 
     const emailSend = async () => {
         try{
