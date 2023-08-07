@@ -5,7 +5,8 @@ import {
     USER_RESISTER_FAIL,
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
-    USER_LOGIN_FAIL
+    USER_LOGIN_FAIL,
+    USER_LOGOUT
 } from "../constants/userConstants";
 
 const baseURL = "http://localhost:8000/api/auth"
@@ -69,4 +70,9 @@ export const login = (
             : err.message
         })
     }
+}
+export const logout = () => (dispatch) => {
+    localStorage.removeItem('userInfo')
+    localStorage.removeItem('token')
+    dispatch({type : USER_LOGOUT})
 }

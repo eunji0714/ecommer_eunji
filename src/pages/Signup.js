@@ -25,6 +25,8 @@ const Signup = () => {
 
     const userRegister = useSelector((state) => state.userResister)
     const {loading, error, userInfo} = userRegister
+    const userLogin = useSelector((state)=> state.userLogin)
+    const {userInfo:loginUser} = userLogin
 
     console.log(isMarketingAgree)
     // const onSignuphandler = async () =>{
@@ -69,6 +71,9 @@ const Signup = () => {
     }
 
     useEffect(()=> {
+        if(loginUser){
+            navigate("/")
+        }
         if(userInfo){
             navigate("/login")
         }

@@ -1,47 +1,52 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Container, Form, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../actions/userActions";
 
 const Header = () => {
 
+    const dispatch = useDispatch()
+    const userLogin = useSelector((state) => state.userLogin)
+    const {userInfo} = userLogin
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [userinfo, setUserinfo] = useState({})
-    console.log(isLoggedIn)
+    // const [isLoggedIn, setIsLoggedIn] = useState(false)
+    // const [userinfo, setUserinfo] = useState({})
+    // console.log(isLoggedIn)
 
-    const getProfile = async (token)=>{
-        try{
-            const options = {
-                headers : {
-                    Authorization: "bearer " + token.toString()
-                }
-            }
-            const {data, status} = await axios.get("http://localhost:8000/api/auth", options)
-            if (status === 200){
-                console.log(data.data)
-                setUserinfo(data.data)
-            }
-
-        }catch(err){
-            console.log(err.message)
-        }
-    }
+    // const getProfile = async (token)=>{
+    //     try{
+    //         const options = {
+    //             headers : {
+    //                 Authorization: "bearer " + token.toString()
+    //             }
+    //         }
+    //         const {data, status} = await axios.get("http://localhost:8000/api/auth", options)
+    //         if (status === 200){
+    //             console.log(data.data)
+    //             setUserinfo(data.data)
+    //         }
+    //
+    //     }catch(err){
+    //         console.log(err.message)
+    //     }
+    // }
 
     const logoutHandler = () => {
-        localStorage.clear()
-        alert("로그아웃 완료")
+        dispatch(logout())
+        // localStorage.clear()
+        // alert("로그아웃 완료")
     }
 
-    useEffect(()=>{
-        const token = localStorage.getItem("token")
-        if(token) {
-            setIsLoggedIn(true)
-            getProfile(token)
-        }
-    },[])
-
-    console.log("{{{{{{{{{", userinfo.username)
-
+    // useEffect(()=>{
+    //     const token = localStorage.getItem("token")
+    //     if(token) {
+    //         setIsLoggedIn(true)
+    //         getProfile(token)
+    //     }
+    // },[])
+    //
+    // console.log(userInfo.roles.includes("admin"))
     return (
         <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
             <Container>
@@ -51,13 +56,15 @@ const Header = () => {
                     <Nav className="me-auto">
                         <Nav.Link href="/movies">Movies</Nav.Link>
                         <Nav.Link href="/tvs">Tvs</Nav.Link>
-                        <Nav.Link href="/users">User List</Nav.Link>
+                        {userInfo && userInfo.roles?.includes("admin") && (
+                            <Nav.Link href="/users">User List</Nav.Link>
+                        )}
                     </Nav>
                     {
-                        isLoggedIn
+                        userInfo
                             ? (
                                 <Nav>
-                                    <NavDropdown title={userinfo.username}>
+                                    <NavDropdown title={userInfo.username}>
                                         <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                                         <NavDropdown.Item href="#action/3.2">
                                             Another action
