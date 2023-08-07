@@ -20,13 +20,11 @@ const Signup = () => {
     const [codeshow, setCodeshow] = useState(false)
     const [btnDisabled, setBtnDisabled] = useState(false)
 
-    const [loading, setLoading] = useState(false)
-
     const [isMarketingAgree, setIsMarketingAgree] = useState(false)
     const [isPersonalInfoAgree, setIsPersonalInfoAgree] = useState(false)
 
     const userRegister = useSelector((state) => state.userResister)
-    const {error, userInfo} = userRegister
+    const {loading, error, userInfo} = userRegister
 
     console.log(isMarketingAgree)
     // const onSignuphandler = async () =>{
@@ -78,7 +76,6 @@ const Signup = () => {
 
     const emailSend = async () => {
         try{
-            setLoading(true)
             const userInput = {
                 email
             }
@@ -88,16 +85,13 @@ const Signup = () => {
 
                 alert("Please check your email.")
                 setCodeshow(true)
-                setLoading(false)
             }
         }catch (err){
-            setLoading(false)
         }
     }
 
     const emailVerification = async() => {
         try{
-            setLoading(true)
             const userInput = {
                 email, code
             }
@@ -105,11 +99,9 @@ const Signup = () => {
 
             if(status === 201){
                 alert("이메일 확인완료")
-                setLoading(false)
             }
         }catch(err){
             console.log(err.message)
-            setLoading(false)
         }
     }
 

@@ -15,7 +15,7 @@ const Setpassword = () => {
     console.log("tokenString",tokenString)
     const onSetpassword = async () => {
         try{
-            if(password != confirmpw){
+            if(password !== confirmpw){
                 alert("Password do not match")
             }
             const userInput = {

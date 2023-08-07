@@ -1,36 +1,56 @@
-import React, {useState} from 'react';
-import {Button, Container, Form, Stack, Nav, Row, Col} from "react-bootstrap";
+import React, {useEffect, useState} from 'react';
+import {Button, Container, Form, Stack, Nav, Row, Col, Spinner} from "react-bootstrap";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {login} from "../actions/userActions";
 
 const LogIn = () => {
+
+    const navigate = useNavigate()
+
+    const dispatch = useDispatch()
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const navigate = useNavigate()
-
+    const userLogin = useSelector((state) => state.userLogin)
+    const {loading, error, userInfo} = userLogin
     const onLoginhandler = async() => {
-        try{
-            const userInput = {
-                email,password
-            }
-            console.log("로그인 프로세스", userInput)
+        // try{
+        //     const userInput = {
+        //         email,password
+        //     }
+        //     console.log("로그인 프로세스", userInput)
+        //
+        //     const {data, status} = await axios.post("http://localhost:8000/api/auth/login", userInput)
+        //     console.log(data)
+        //     console.log(status)
+        //     if (status === 200){
+        //         localStorage.setItem("token", data.data.token)
+        //         navigate("/profile")
+        //     }
+        // }catch (err){
+        //
+        // }
 
-            const {data, status} = await axios.post("http://localhost:8000/api/auth/login", userInput)
-            console.log(data)
-            console.log(status)
-            if (status === 200){
-                localStorage.setItem("token", data.data.token)
-                navigate("/profile")
-            }
-        }catch (err){
-
-        }
+        dispatch(login(
+            email, password
+        ))
     }
 
+    useEffect(()=> {
+        if(userInfo){
+            navigate("/profile")
+        }
+    }, [userInfo, navigate])
     return (
         <Row>
+            {loading && (
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            )}
             <Col md={{span:6, offset:3}}>
                 <Container className={"row mt-5 pt-5 mx-auto px-5"}>
 
