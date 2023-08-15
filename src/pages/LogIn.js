@@ -4,6 +4,8 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {login} from "../actions/userActions";
+import Loading from "../components/Loading";
+import {useForm} from "react-hook-form";
 
 const LogIn = () => {
 
@@ -11,12 +13,15 @@ const LogIn = () => {
 
     const dispatch = useDispatch()
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
+
+    const {register, handleSubmit, watch, formState: {errors}} = useForm();
 
     const userLogin = useSelector((state) => state.userLogin)
     const {loading, error, userInfo} = userLogin
-    const onLoginhandler = async() => {
+    const onLoginhandler = async(data) => {
+        console.log(data)
         // try{
         //     const userInput = {
         //         email,password
@@ -35,7 +40,7 @@ const LogIn = () => {
         // }
 
         dispatch(login(
-            email, password
+            data.email, data.password
         ))
     }
 
@@ -46,11 +51,7 @@ const LogIn = () => {
     }, [dispatch, userInfo, navigate])
     return (
         <Row>
-            {loading && (
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-            )}
+            {loading && <Loading />}
             <Col md={{span:6, offset:3}}>
                 <Container className={"row mt-5 pt-5 mx-auto px-5"}>
 
@@ -59,19 +60,23 @@ const LogIn = () => {
                         className={"mt-4 py-2"}
                         type="text"
                         placeholder="아이디를 입력하세요"
-                        value={email}
-                        onChange={e=>setEmail(e.target.value)}
+                        {...register("email", {required: true})}
+                        // value={email}
+                        // onChange={e=>setEmail(e.target.value)}
                     />
+                    {errors.email && <span>Email is required.</span>}
                     <input
                         className={"mt-1 py-2 "}
                         type="password"
                         placeholder="비밀번호를 입력하세요"
-                        value={password}
-                        onChange={e=>setPassword(e.target.value)}
+                        {...register("password", {required: true})}
+                        // value={password}
+                        // onChange={e=>setPassword(e.target.value)}
                     />
+                    {errors.password && <span>Password is required.</span>}
                     <Button
                         className={"mt-3 fw-bolder py-3 border-0 bg-info text-white"}
-                        onClick={onLoginhandler}
+                        onClick={handleSubmit(onLoginhandler)}
                     >
                         로그인
                     </Button>

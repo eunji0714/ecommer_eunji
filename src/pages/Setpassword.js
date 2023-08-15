@@ -4,6 +4,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {changePassword} from "../actions/userActions";
+import Loading from "../components/Loading";
 
 const Setpassword = () => {
 
@@ -60,11 +61,7 @@ const Setpassword = () => {
     return (
         <Container className={"mt-5 col px-5 "}>
             <h3 className={"mb-5"}>🏠은지의집</h3>
-            {loading && (
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-            )}
+            {loading && <Loading />}
             <p className={"mx-1"}>비밀번호를 재설정하세요.</p>
             <div className={"d-grid"}>
                 <input

@@ -3,6 +3,7 @@ import {Button, Container, Nav, Row, Col} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {forgotPassword} from "../actions/userActions";
+import Loading from "../components/Loading";
 
 
 const Findpw = () => {
@@ -48,6 +49,7 @@ const Findpw = () => {
             <Col md={{span:6, offset:3}}>
                 <Container className={"mt-5 col px-5 "}>
             <h3 className={"mb-5 fw-bold"}>🏠은지의집</h3>
+            {loading && <Loading />}
             <p className={"text-center"}>가입한 이메일 주소를 입력해주세요.</p>
            <div className={"d-grid"}>
                 <input
