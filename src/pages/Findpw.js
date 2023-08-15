@@ -1,28 +1,46 @@
-import React, {useState} from 'react';
-import {InputGroup, Form, Button, Container, Nav, Row, Col} from "react-bootstrap";
-import axios from "axios";
+import React, {useEffect, useState} from 'react';
+import {Button, Container, Nav, Row, Col} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {forgotPassword} from "../actions/userActions";
 
 
 const Findpw = () => {
 
     const navigate = useNavigate()
 
+    const dispatch = useDispatch()
+
     const [email, setEmail] = useState("")
+
+    const userPassword = useSelector((state) => state.userPassword)
+    const {loading, error, userInfo} = userPassword
+
     const findPassword = async() => {
-        try{
-            const userInput = {
-                email
-            }
-            const { status} = await axios.post("http://localhost:8000/api/auth/forgot/password", userInput)
-            if(status === 201){
-                alert("Please check you email.")
-                navigate("/")
-            }
-        }catch(err){
-            console.log(err.message)
-        }
+        // try{
+        //     const userInput = {
+        //         email
+        //     }
+        //     const { status} = await axios.post("http://localhost:8000/api/auth/forgot/password", userInput)
+        //     if(status === 201){
+        //         alert("Please check you email.")
+        //         navigate("/")
+        //     }
+        // }catch(err){
+        //     console.log(err.message)
+        // }
+
+        dispatch(forgotPassword(
+            email
+        ))
     }
+
+    useEffect(() => {
+        if (userInfo){
+            alert("Please check your email.")
+            navigate("/")
+        }
+    }, [dispatch, userInfo, navigate])
 
 
     return (

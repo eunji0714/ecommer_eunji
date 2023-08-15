@@ -2,13 +2,15 @@ import {createStore, combineReducers, applyMiddleware} from "redux";
 import thunk from 'redux-thunk'
 import {composeWithDevTools} from "redux-devtools-extension";
 import {
-    userLoginReducer,
-    userResisterReducer
+    userLoginReducer, userPasswordReducer,
+    userResisterReducer, userSetPasswordReducer
 } from "./reducers/userReducers";
 
 const reducer = combineReducers({
     userResister : userResisterReducer,
     userLogin : userLoginReducer,
+    userPassword : userPasswordReducer,
+    userSetPassword : userSetPasswordReducer,
 })
 
 const tokenInfoFromStorage = localStorage.getItem('token')

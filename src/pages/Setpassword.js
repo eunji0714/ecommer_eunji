@@ -1,41 +1,70 @@
-import React, {useState} from 'react';
-import {Button, Container} from "react-bootstrap";
+import React, {useEffect, useState} from 'react';
+import {Button, Container, Spinner} from "react-bootstrap";
 import {useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {changePassword} from "../actions/userActions";
 
 const Setpassword = () => {
 
+    const {search} = useLocation()
+    const urlParams = new URLSearchParams(search)
+    const token = urlParams.get("token")
+    console.log("--", token)
+
     const navigate = useNavigate()
 
-    const {search} = useLocation()
+    const dispatch = useDispatch()
+
     const [password, setPassword] = useState("")
     const [confirmpw, setConfirmpw] = useState("")
 
-    const tokenString = search.slice(7)
-    console.log("tokenString",tokenString)
-    const onSetpassword = async () => {
-        try{
-            if(password !== confirmpw){
-                alert("Password do not match")
-            }
-            const userInput = {
-                password, token: tokenString
-            }
-            console.log(userInput)
-            const {status, data} = await axios.post("http://localhost:8000/api/auth/change/password", userInput)
-            if(status === 201){
-                navigate("/")
-            }else{
-                console.log(data)
-            }
 
-        }catch(err){
-            console.log(err.message)
+    const userSetPassword = useSelector((state) => state.userSetPassword)
+    const {loading, error, success} = userSetPassword
+    const onSetpassword = async (e) => {
+        e.preventDefault()
+        if(password !== confirmpw){
+            alert("Password do not match.")
         }
+        console.log(password,token)
+        dispatch(changePassword(
+            password, token
+        ))
+
+        // try{
+        //     if(password !== confirmpw){
+        //         alert("Password do not match")
+        //     }
+        //     const userInput = {
+        //         password, token: tokenString
+        //     }
+        //     console.log(userInput)
+        //     const {status, data} = await axios.post("http://localhost:8000/api/auth/change/password", userInput)
+        //     if(status === 201){
+        //         navigate("/")
+        //     }else{
+        //         console.log(data)
+        //     }
+        //
+        // }catch(err){
+        //     console.log(err.message)
+        // }
     }
+
+    useEffect(() => {
+        if (success) {
+            navigate("/")
+        }
+    }, [dispatch, success, navigate])
     return (
         <Container className={"mt-5 col px-5 "}>
             <h3 className={"mb-5"}>🏠은지의집</h3>
+            {loading && (
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            )}
             <p className={"mx-1"}>비밀번호를 재설정하세요.</p>
             <div className={"d-grid"}>
                 <input

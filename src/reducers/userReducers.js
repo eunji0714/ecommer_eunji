@@ -5,7 +5,13 @@ import {
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAIL,
-    USER_LOGOUT
+    USER_LOGOUT,
+    USER_PASSWORD_REQUEST,
+    USER_PASSWORD_SUCCESS,
+    USER_PASSWORD_FAIL,
+    USER_SETPASSWORD_REQUEST,
+    USER_SETPASSWORD_SUCCESS,
+    USER_SETPASSWORD_FAIL
 } from "../constants/userConstants";
 
 export const userResisterReducer = (state = {}, action) => {
@@ -31,6 +37,32 @@ export const userLoginReducer = (state = {}, action) => {
             return {loading : false, error : action.payload}
         case USER_LOGOUT :
             return {}
+        default:
+            return state
+    }
+}
+
+export const userPasswordReducer = (state = {}, action) => {
+    switch (action.type){
+        case USER_PASSWORD_REQUEST:
+            return {loading :true}
+        case USER_PASSWORD_SUCCESS:
+            return {loading : false, userInfo : action.payload}
+        case USER_PASSWORD_FAIL:
+            return {loading: false, error : action.payload}
+        default:
+            return state
+    }
+}
+
+export const userSetPasswordReducer = (state = {}, action) => {
+    switch (action.type){
+        case USER_SETPASSWORD_REQUEST:
+            return {loading : true}
+        case USER_SETPASSWORD_SUCCESS:
+            return {loading : false, success : action.payload}
+        case USER_SETPASSWORD_FAIL:
+            return {loading : false, error : action.payload}
         default:
             return state
     }

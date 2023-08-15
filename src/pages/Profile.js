@@ -12,11 +12,13 @@ const Profile = () => {
     const userLogin = useSelector((state) => state.userLogin)
     const {userInfo} = userLogin
 
+
+
     useEffect(()=> {
         if (!userInfo){
             navigate("/login")
         }
-    }, [userInfo, navigate])
+    }, [dispatch, userInfo, navigate])
 
     // const [userInfo, setUserInfo] = useState({})
     // const getUserInfo = async() => {

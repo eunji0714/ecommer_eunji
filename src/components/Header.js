@@ -9,6 +9,7 @@ const Header = () => {
     const dispatch = useDispatch()
     const userLogin = useSelector((state) => state.userLogin)
     const {userInfo} = userLogin
+    console.log("-----",userInfo)
 
     // const [isLoggedIn, setIsLoggedIn] = useState(false)
     // const [userinfo, setUserinfo] = useState({})

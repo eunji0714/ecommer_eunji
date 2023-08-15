@@ -6,7 +6,10 @@ import {
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAIL,
-    USER_LOGOUT
+    USER_LOGOUT,
+    USER_PASSWORD_REQUEST,
+    USER_PASSWORD_SUCCESS,
+    USER_PASSWORD_FAIL, USER_SETPASSWORD_REQUEST, USER_SETPASSWORD_SUCCESS, USER_SETPASSWORD_FAIL,
 } from "../constants/userConstants";
 
 const baseURL = "http://localhost:8000/api/auth"
@@ -56,7 +59,7 @@ export const login = (
         if(status === 200){
             dispatch({
                 type : USER_LOGIN_SUCCESS,
-                payload : data.data,
+                payload : data.data.user,
             })
             localStorage.setItem("token", JSON.stringify(data.data.token))
             localStorage.setItem("userInfo", JSON.stringify(data.data.user))
@@ -75,4 +78,58 @@ export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo')
     localStorage.removeItem('token')
     dispatch({type : USER_LOGOUT})
+}
+
+export const forgotPassword = (email) => async (dispatch) => {
+    try{
+        dispatch({
+            type : USER_PASSWORD_REQUEST
+        })
+        const userInput = {
+            email
+        }
+        const {data, status} = await axios.post (baseURL + "/forgot/password", userInput)
+        console.log(userInput)
+        if(status === 201){
+            dispatch({
+                type : USER_PASSWORD_SUCCESS,
+                payload : data.data,
+            })
+
+        }
+    }catch (err){
+        dispatch({
+            type : USER_PASSWORD_FAIL,
+            payload:
+            err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message
+        })
+    }
+}
+
+export const changePassword = (password, token) => async (dispatch) => {
+    try{
+        dispatch({
+            type : USER_SETPASSWORD_REQUEST
+        })
+        const userInput = {
+            password, token
+        }
+        const {status} = await axios.post(baseURL + "/change/password", userInput)
+        if(status === 201){
+            dispatch({
+                type : USER_SETPASSWORD_SUCCESS,
+                payload : true,
+            })
+        }
+    }catch (err){
+        dispatch({
+            type : USER_SETPASSWORD_FAIL,
+            payload :
+            err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message
+        })
+    }
 }

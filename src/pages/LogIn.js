@@ -39,11 +39,11 @@ const LogIn = () => {
         ))
     }
 
-    useEffect(()=> {
-        if(userInfo){
-            navigate("/profile")
+    useEffect(() => {
+        if (userInfo) {
+            navigate('/profile')
         }
-    }, [userInfo, navigate])
+    }, [dispatch, userInfo, navigate])
     return (
         <Row>
             {loading && (
@@ -82,9 +82,9 @@ const LogIn = () => {
                     </div>
                     <div className={"text-center mt-4"}>
                         <p>SNS계정으로 간편 로그인 / 회원가입</p>
-                        <img className={"w-25 m-3 rounded-circle "} src="https://www.facebook.com/images/fb_icon_325x325.png"/>
-                        <img className={"w-25 m-3 rounded-circle"} src="https://mblogthumb-phinf.pstatic.net/MjAyMDA3MTRfMjI5/MDAxNTk0NzI5NzcyMDMz.X2YVWOeE6fwrOSnUiARthmNM9a4mfRnneetw1hTtyHIg.1Tqwf_4qgAqc1v3jE6xbzobcrV3X6yN8JVUVwjlRGkog.JPEG.xuni1021/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-%EB%A1%9C%EA%B3%A0-ai-3.jpg?type=w800"/>
-                        <img className={"w-25 m-3 rounded-circle"} src="https://w7.pngwing.com/pngs/506/509/png-transparent-google-company-text-logo.png"/>
+                        {/*<img className={"w-25 m-3 rounded-circle "} src="https://www.facebook.com/images/fb_icon_325x325.png"/>*/}
+                        {/*<img className={"w-25 m-3 rounded-circle"} src="https://mblogthumb-phinf.pstatic.net/MjAyMDA3MTRfMjI5/MDAxNTk0NzI5NzcyMDMz.X2YVWOeE6fwrOSnUiARthmNM9a4mfRnneetw1hTtyHIg.1Tqwf_4qgAqc1v3jE6xbzobcrV3X6yN8JVUVwjlRGkog.JPEG.xuni1021/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-%EB%A1%9C%EA%B3%A0-ai-3.jpg?type=w800"/>*/}
+                        {/*<img className={"w-25 m-3 rounded-circle"} src="https://w7.pngwing.com/pngs/506/509/png-transparent-google-company-text-logo.png"/>*/}
 
                     </div>
 
