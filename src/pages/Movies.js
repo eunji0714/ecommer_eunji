@@ -2,39 +2,47 @@ import React, {useEffect, useState} from 'react';
 import {Button, Card, Container, Row} from "react-bootstrap";
 import axios from "axios";
 import Cards from "../components/Cards";
+import Containerview from "../components/Containerview";
+import {useFetchMovies, usePaginatedFetchMovies} from "../services/fetchMovies";
+import Loading from "../components/Loading";
 
 const Movies = () => {
 
-    const [movies, setMovies] = useState([])
-    const getMovies = async () => {
-        try{
-            const options = {
-                headers: {
-                    accept: 'application/json',
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NGE3NTdhMWVlYzIzYjZiMjNhNmMzMzQwYjdmNjgyNCIsInN1YiI6IjY0YjM3NzEwMGU0ZmM4MDBjNjgzYzg4YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Aknbgw7OXsHEm-k7z_Ia6Y_YDKYlCBHIu7eYOGIhWu0'
-                }
-            }
-            const {data, status} = await axios.get("https://api.themoviedb.org/3/movie/now_playing", options)
-            console.log(data.results)
-            if(status === 200){
-                setMovies(data.results)
-            }
-        }catch (err){
-            console.log(err.message)
-        }
+    const {data : movies, isLoading} = useFetchMovies()
+    console.log(movies)
+    //
+    // const [movies, setMovies] = useState([])
+    // const getMovies = async () => {
+    //     try{
+    //         const options = {
+
+    //         }
+    //         const {data, status} = await axios.get("https://api.themoviedb.org/3/movie/now_playing", options)
+    //         console.log(data.results)
+    //         if(status === 200){
+    //             setMovies(data.results)
+    //         }
+    //     }catch (err){
+    //         console.log(err.message)
+    //     }
+    // }
+    //
+    // useEffect(()=> {
+    //     getMovies()
+    // },[])
+
+    if (isLoading) {
+        return <Loading />
     }
 
-    useEffect(()=> {
-        getMovies()
-    },[])
-
     return (
-        <Container className={"mt-3 pt-4"}>
-            <h2 className={"fw-bold"}>영화리스트 상영리스트</h2>
-            <Row className={"justify-content-md-center"}>
+        <Containerview title={"영화리스트 상영리스트"}>
+
+            {movies?.length === undefined && <h1>no data</h1>}
                 {
-                    movies && movies.map(movie => (
+                    movies && movies.map((movie, index) => (
                         <Cards
+                            key = {index}
                             img={movie.poster_path}
                             overview={movie.overview}
                             title={movie.title}
@@ -52,8 +60,7 @@ const Movies = () => {
                         // </Card>
                     ))
                 }
-            </Row>
-        </Container>
+        </Containerview>
 
     );
 };

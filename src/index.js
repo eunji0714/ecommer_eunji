@@ -6,13 +6,20 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Provider} from "react-redux";
 import store from "./store";
+import {ReactQueryProvider} from "./Provider";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <Provider store={store}>
-          <App />
-      </Provider>
+      <ReactQueryProvider>
+          <Provider store={store}>
+
+                  <App />
+                  <ReactQueryDevtools initialIsOpen={false} />
+
+          </Provider>
+      </ReactQueryProvider>
   </React.StrictMode>
 );
 
