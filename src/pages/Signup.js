@@ -3,7 +3,8 @@ import {Button, Col, Container, Form, InputGroup, Row, Spinner} from "react-boot
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {signup} from "../actions/userActions";
+import {emailSendVerification, signup} from "../actions/userActions";
+import {useForm} from "react-hook-form";
 
 const Signup = () => {
 
@@ -23,10 +24,15 @@ const Signup = () => {
     const [isMarketingAgree, setIsMarketingAgree] = useState(false)
     const [isPersonalInfoAgree, setIsPersonalInfoAgree] = useState(false)
 
+    const {register, handleSubmit} = useForm()
+
     const userRegister = useSelector((state) => state.userResister)
     const {loading, error, userInfo} = userRegister
+
     const userLogin = useSelector((state)=> state.userLogin)
     const {userInfo:loginUser} = userLogin
+    const userSendCode = useSelector((state) => state.userSendCode)
+    const {success} = userSendCode
 
     console.log(isMarketingAgree)
     // const onSignuphandler = async () =>{
@@ -79,21 +85,32 @@ const Signup = () => {
         }
     }, [userInfo, navigate])
 
-    const emailSend = async () => {
-        try{
-            const userInput = {
-                email
-            }
-            const {status} = await axios.post("http://localhost:8000/api/auth/email/send",userInput)
-            console.log()
-            if(status === 201){
-
-                alert("Please check your email.")
-                setCodeshow(true)
-            }
-        }catch (err){
-        }
+    const emailSend = async (e) => {
+        e.preventDefault()
+        dispatch(emailSendVerification(
+           email
+        ))
+        // try{
+        //     const userInput = {
+        //         email
+        //     }
+        //     const {status} = await axios.post("http://localhost:8000/api/auth/email/send",userInput)
+        //     console.log()
+        //     if(status === 201){
+        //
+        //         alert("Please check your email.")
+        //         setCodeshow(true)
+        //     }
+        // }catch (err){
+        // }
     }
+
+    useEffect(()=> {
+        if (success){
+            alert("Please check your email.")
+            setCodeshow(true)
+        }
+    }, [dispatch, userInfo])
 
     const emailVerification = async() => {
         try{

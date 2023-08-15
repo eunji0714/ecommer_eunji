@@ -9,7 +9,11 @@ import {
     USER_LOGOUT,
     USER_PASSWORD_REQUEST,
     USER_PASSWORD_SUCCESS,
-    USER_PASSWORD_FAIL, USER_SETPASSWORD_REQUEST, USER_SETPASSWORD_SUCCESS, USER_SETPASSWORD_FAIL,
+    USER_PASSWORD_FAIL,
+    USER_SETPASSWORD_REQUEST,
+    USER_SETPASSWORD_SUCCESS,
+    USER_SETPASSWORD_FAIL,
+    USER_SENDCODE_REQUEST, USER_SENDCODE_SUCCESS, USER_SENDCODE_FAIL,
 } from "../constants/userConstants";
 
 const baseURL = "http://localhost:8000/api/auth"
@@ -126,6 +130,33 @@ export const changePassword = (password, token) => async (dispatch) => {
     }catch (err){
         dispatch({
             type : USER_SETPASSWORD_FAIL,
+            payload :
+            err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message
+        })
+    }
+}
+
+export const emailSendVerification = (email) => async (dispatch) => {
+    try{
+        dispatch({
+            type : USER_SENDCODE_REQUEST
+        })
+        const userInput = {
+            email
+        }
+        const {status} = await axios.post(baseURL + "/email/send", userInput)
+        console.log(status)
+        if(status===201){
+            dispatch({
+                type: USER_SENDCODE_SUCCESS,
+                payload : true,
+            })
+        }
+    }catch (err){
+        dispatch({
+            type : USER_SENDCODE_FAIL,
             payload :
             err.response && err.response.data.message
             ? err.response.data.message

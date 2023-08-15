@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 import {composeWithDevTools} from "redux-devtools-extension";
 import {
     userLoginReducer, userPasswordReducer,
-    userResisterReducer, userSetPasswordReducer
+    userResisterReducer, userSendCodeReducer, userSetPasswordReducer
 } from "./reducers/userReducers";
 
 const reducer = combineReducers({
@@ -11,6 +11,7 @@ const reducer = combineReducers({
     userLogin : userLoginReducer,
     userPassword : userPasswordReducer,
     userSetPassword : userSetPasswordReducer,
+    userSendCode : userSendCodeReducer,
 })
 
 const tokenInfoFromStorage = localStorage.getItem('token')

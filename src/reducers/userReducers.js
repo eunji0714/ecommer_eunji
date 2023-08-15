@@ -11,8 +11,9 @@ import {
     USER_PASSWORD_FAIL,
     USER_SETPASSWORD_REQUEST,
     USER_SETPASSWORD_SUCCESS,
-    USER_SETPASSWORD_FAIL
+    USER_SETPASSWORD_FAIL, USER_SENDCODE_REQUEST, USER_SENDCODE_SUCCESS, USER_SENDCODE_FAIL
 } from "../constants/userConstants";
+import {emailSendVerification} from "../actions/userActions";
 
 export const userResisterReducer = (state = {}, action) => {
     switch (action.type) {
@@ -63,6 +64,19 @@ export const userSetPasswordReducer = (state = {}, action) => {
             return {loading : false, success : action.payload}
         case USER_SETPASSWORD_FAIL:
             return {loading : false, error : action.payload}
+        default:
+            return state
+    }
+}
+
+export const userSendCodeReducer = (state = {}, action) => {
+    switch (action.type){
+        case USER_SENDCODE_REQUEST:
+            return {loading : true}
+        case USER_SENDCODE_SUCCESS:
+            return { lading : false, success : action.payload}
+        case USER_SENDCODE_FAIL:
+            return {loading: false, success : action.payload}
         default:
             return state
     }
