@@ -16,31 +16,16 @@ const LogIn = () => {
     // const [email, setEmail] = useState("");
     // const [password, setPassword] = useState("");
 
-    const {register, handleSubmit, watch, formState: {errors}} = useForm();
+    const {register, handleSubmit, formState: {errors}} = useForm();
 
     const userLogin = useSelector((state) => state.userLogin)
     const {loading, error, userInfo} = userLogin
-    const onLoginhandler = async(data) => {
+    const onLoginhandler = (data) => {
         console.log(data)
-        // try{
-        //     const userInput = {
-        //         email,password
-        //     }
-        //     console.log("로그인 프로세스", userInput)
-        //
-        //     const {data, status} = await axios.post("http://localhost:8000/api/auth/login", userInput)
-        //     console.log(data)
-        //     console.log(status)
-        //     if (status === 200){
-        //         localStorage.setItem("token", data.data.token)
-        //         navigate("/profile")
-        //     }
-        // }catch (err){
-        //
-        // }
+
 
         dispatch(login(
-            data.email, data.password
+            data
         ))
     }
 

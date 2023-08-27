@@ -187,15 +187,6 @@ const Signup = () => {
                         중복확인
                     </Button>
                 </InputGroup>
-                {/*<input*/}
-                {/*    className={"py-2"}*/}
-                {/*    type="email"*/}
-                {/*    placeholder="이메일"*/}
-                {/*    value={email}*/}
-                {/*    onChange={e=> setEmail(e.target.value)}*/}
-                {/*    //변경된 값을 추적해주는 코드*/}
-                {/*    //내가 입력한 값, event로 써도됨*/}
-                {/*/>*/}
                 {codeshow ? (
                     <input
                         className={"py-2 mt-2"}
